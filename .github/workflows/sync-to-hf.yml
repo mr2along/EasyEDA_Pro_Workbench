@@ -7,6 +7,7 @@ on:
 
 permissions:
   contents: read
+  id-token: write
 
 jobs:
   sync:
@@ -15,11 +16,27 @@ jobs:
     steps:
       - name: Checkout GitHub source
         uses: actions/checkout@v4
+
+      - name: Install Hugging Face CLI
+        run: |
+          curl -LsSf https://hf.co/cli/install.sh | bash
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+
+      - name: Exchange GitHub OIDC identity for a short-lived Hugging Face token
+        env:
+          HF_OIDC_RESOURCE: spaces/Mrlongpro/EasyEDA_Pro_Workbench
+        run: |
+          set -euo pipefail
+          HF_TOKEN="$(hf auth token)"
+          test -n "$HF_TOKEN"
+          echo "::add-mask::$HF_TOKEN"
+          echo "HF_TOKEN=$HF_TOKEN" >> "$GITHUB_ENV"
+
       - name: Sync source to Hugging Face Docker Space
         uses: huggingface/hub-sync@v0.3.0
         with:
           github_repo_id: ${{ github.repository }}
           huggingface_repo_id: Mrlongpro/EasyEDA_Pro_Workbench
-          hf_token: ${{ secrets.HF_TOKEN }}
+          hf_token: ${{ env.HF_TOKEN }}
           space_sdk: docker
           private: true
