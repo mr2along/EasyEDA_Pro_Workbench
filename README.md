@@ -114,8 +114,9 @@ Before enabling it:
 
 1. Create a Hugging Face **write** access token with permission to create and write the target Space repository.
 2. Add it in GitHub: **Settings → Secrets and variables → Actions → New repository secret**, name it exactly `HF_TOKEN`. Never paste the token into a commit or chat.
-3. Ensure the Hugging Face account is eligible to create/run a Docker Space. Hugging Face currently documents Docker Spaces as requiring a paid personal plan or an eligible Team/Enterprise account.
-4. Run the workflow manually once, or push to `main`; inspect the `Sync to Hugging Face Space` workflow result.
+3. Add a GitHub Actions repository variable named `HF_SYNC_ENABLED` with value `true` to enable automatic sync. It is intentionally disabled until credentials and Space entitlement are ready.
+4. Ensure the Hugging Face account is eligible to create/run a Docker Space. Hugging Face currently documents Docker Spaces as requiring a paid personal plan or an eligible Team/Enterprise account.
+5. Run the workflow manually once, or push to `main`; inspect the `Sync to Hugging Face Space` workflow result.
 
 The Space itself must also receive runtime secrets in its **Settings → Variables and secrets**:
 
