@@ -10,6 +10,7 @@ permissions:
 
 jobs:
   sync:
+    if: ${{ vars.HF_SYNC_ENABLED == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout GitHub source
