@@ -104,3 +104,26 @@ GitHub Actions validates Python syntax and unit tests. Docker image build valida
 - Keep `/data/automation` limited to reviewed JavaScript. EasyEDA's `eda` extension context can have broad editor permissions.
 - No arbitrary shell endpoint is exposed.
 - VNC is bound to localhost inside the container and is reached through authenticated noVNC.
+
+
+## Hugging Face source synchronization
+
+The GitHub Actions workflow `.github/workflows/sync-to-hf.yml` mirrors every push to `main` into `Mrlongpro/EasyEDA_Pro_Workbench` using the official `huggingface/hub-sync` action.
+
+Before enabling it:
+
+1. Create a Hugging Face **write** access token with permission to create and write the target Space repository.
+2. Add it in GitHub: **Settings → Secrets and variables → Actions → New repository secret**, name it exactly `HF_TOKEN`. Never paste the token into a commit or chat.
+3. Ensure the Hugging Face account is eligible to create/run a Docker Space. Hugging Face currently documents Docker Spaces as requiring a paid personal plan or an eligible Team/Enterprise account.
+4. Run the workflow manually once, or push to `main`; inspect the `Sync to Hugging Face Space` workflow result.
+
+The Space itself must also receive runtime secrets in its **Settings → Variables and secrets**:
+
+- `WEB_PASSWORD`
+- `VNC_PASSWORD`
+- `APP_API_KEY`
+- Optional `EASYEDA_INSTALLER_URL` (HTTPS official EasyEDA download URL)
+
+The GitHub `HF_TOKEN` is only for source synchronization. Do not reuse it as any runtime application password. For project persistence, configure persistent storage mounted at `/data` if available for the selected Space plan/hardware.
+
+A Space repository can be created by the sync action, but this does not grant compute entitlement or guarantee a successful Docker runtime. Validate the Space build and runtime separately after the first sync.
