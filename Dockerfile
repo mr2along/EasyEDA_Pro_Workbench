@@ -10,8 +10,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
     PROJECTS_DIR=/data/projects \
     PYTHONUNBUFFERED=1
 
-RUN sed -i 's|http://archive.ubuntu.com/ubuntu|https://archive.ubuntu.com/ubuntu|g; s|http://security.ubuntu.com/ubuntu|https://security.ubuntu.com/ubuntu|g' /etc/apt/sources.list \
-    && apt-get update && apt-get install -y --no-install-recommends \
+RUN apt-get update && apt-get install -y --no-install-recommends \
     python3 python3-pip python3-venv \
     xvfb xfce4 xfce4-terminal dbus-x11 x11-xserver-utils \
     x11vnc novnc websockify nginx supervisor \
