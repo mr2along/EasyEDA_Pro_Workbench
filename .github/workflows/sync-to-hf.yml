@@ -22,3 +22,4 @@ jobs:
           huggingface_repo_id: Mrlongpro/EasyEDA_Pro_Workbench
           hf_token: ${{ secrets.HF_TOKEN }}
           space_sdk: docker
+          private: true
