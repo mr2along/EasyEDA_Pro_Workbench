@@ -20,7 +20,7 @@ if [[ -n "${EASYEDA_INSTALLER_URL:-}" ]]; then
   python3 /opt/easyeda-workbench/scripts/install_easyeda.py "$EASYEDA_INSTALLER_URL" "$EASYEDA_HOME"
 fi
 
-BIN="$(find "$EASYEDA_HOME" -maxdepth 6 -type f \( -name easyeda-pro -o -name lceda-pro \) -print -quit || true)"
+BIN="$(command -v easyeda-pro || command -v lceda-pro || find "$EASYEDA_HOME" -maxdepth 6 -type f \( -name easyeda-pro -o -name lceda-pro \) -print -quit || true)"
 if [[ -n "$BIN" ]]; then
   chmod +x "$BIN"
   ln -sf "$BIN" /usr/local/bin/easyeda-pro
